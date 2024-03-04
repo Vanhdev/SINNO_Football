@@ -1,0 +1,11 @@
+﻿@page "/home"
+
+<SINNO_FC.Components.Shared.Card Data="@Global.Infomation"></SINNO_FC.Components.Shared.Card>
+<RadzenButton Click=@(args => OnClick()) Text="Xem thông số chi tiết" ButtonStyle="ButtonStyle.Primary" />
+
+@code {
+    void OnClick()
+    {
+        Navigation.NavigateTo("/deltail");
+    }
+}

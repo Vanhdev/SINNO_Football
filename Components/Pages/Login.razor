@@ -1,0 +1,51 @@
+﻿@page "/"
+@layout Layout.AuthLayout
+@inject Services.IAuthService authService
+
+<div class="d-flex justify-center">
+    <RadzenImage Path="assets/goat.png" Style="width: 100%;object-fit:contain" AlternateText="GOAT" />
+</div>
+<RadzenTemplateForm Data=@("LoginModel") Style="padding: 30px 20px 0 20px">
+    <RadzenLogin AllowRememberMe="true"
+                 AllowRegister="false"
+                 AllowResetPassword="false"
+                 FormFieldVariant="Variant.Outlined"
+                 LoginText="Đăng nhập"
+                 UserText="Tên đăng nhập"
+                 PasswordText="Mật khẩu"
+                 RememberMeText="Ghi nhớ mật khẩu"
+                 UserRequired="Điền tên đăng nhập đi, ĐMM !!!"
+                 PasswordRequired="Điền mật khẩu đi, ĐMM !!!"
+                 Login="@OnLogin"/>
+</RadzenTemplateForm>
+
+<style>
+    .rz-button {
+        width: 100%;
+    }
+</style>
+
+
+@code {
+    bool RememberPass;
+    bool password = true;
+
+    protected async Task OnLogin(LoginArgs login)
+    {
+        LoginModel model = new LoginModel
+        {
+            Username = login.Username,
+            Password = login.Password
+        };
+
+        var res = await authService.Login(model);
+
+        Global.Infomation = res;
+        Navigation.NavigateTo("/home");
+    }
+
+    void TogglePassword()
+    {
+        password = !password;
+    }
+}

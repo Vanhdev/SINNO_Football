@@ -1,0 +1,139 @@
+﻿.fut-player-card {
+    margin:auto;
+    position: relative;
+    width: 300px;
+    height: 485px;
+    background-image: url(assets/card-bg.png);
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding: 3.8rem 0;
+    z-index: 2;
+    -webkit-transition: 200ms ease-in;
+    -o-transition: 200ms ease-in;
+    transition: 200ms ease-in;
+}
+
+    .fut-player-card .player-card-top {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        color: #000;
+        padding: 0 1.5rem;
+        height: 260px;
+    }
+
+        .fut-player-card .player-card-top .player-master-info {
+            position: absolute;
+            line-height: 2.2rem;
+            font-weight: bold;
+            padding: 1.5rem 0;
+            text-transform: uppercase;
+        }
+
+            .fut-player-card .player-card-top .player-master-info .player-rating {
+                font-size: 2rem;
+            }
+
+            .fut-player-card .player-card-top .player-master-info .player-position {
+                font-size: 1.4rem;
+            }
+
+            .fut-player-card .player-card-top .player-master-info .player-nation {
+                display: block;
+                width: 2rem;
+                height: 25px;
+                margin: 0.3rem 0;
+            }
+
+                .fut-player-card .player-card-top .player-master-info .player-nation img {
+                    width: 100%;
+                    height: 100%;
+                    -o-object-fit: contain;
+                    object-fit: contain;
+                }
+
+            .fut-player-card .player-card-top .player-master-info .player-club {
+                display: block;
+                width: 2.1rem;
+                height: 40px;
+            }
+
+                .fut-player-card .player-card-top .player-master-info .player-club img {
+                    width: 100%;
+                    height: 100%;
+                    -o-object-fit: contain;
+                    object-fit: contain;
+                }
+
+        .fut-player-card .player-card-top .player-picture {
+            width: 180px;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+            .fut-player-card .player-card-top .player-picture img {
+                width: 100%;
+                height: 100%;
+                -o-object-fit: cover;
+                object-fit: cover;
+                position: relative;
+                bottom: 0;
+            }
+
+
+    .fut-player-card .player-card-bottom {
+        position: relative;
+    }
+
+        .fut-player-card .player-card-bottom .player-info {
+            display: block;
+            padding: 0.3rem 0;
+            color: #000;
+            width: 90%;
+            margin: 0 auto;
+            height: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+            .fut-player-card .player-card-bottom .player-info .player-name {
+                width: 100%;
+                display: block;
+                text-align: center;
+                font-size: 1.6rem;
+                text-transform: uppercase;
+                border-bottom: 2px solid rgba(233, 204, 116, 0.1);
+                padding-bottom: 0.3rem;
+                overflow: hidden;
+                font-weight: bold;
+            }
+
+
+            .fut-player-card .player-card-bottom .player-info .player-features {
+                margin: 0.5rem auto;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+            }
+
+                .fut-player-card .player-card-bottom .player-info .player-features .player-features-col {
+                    padding: 0 0.5rem;
+                }
+
+                    .fut-player-card .player-card-bottom .player-info .player-features .player-features-col div {
+                        font-size: 1rem;
+                        text-transform: uppercase;
+                        font-weight: bold;
+                        line-height: 1.1rem;
+                        text-align:center;
+                    }
+
+                        .fut-player-card .player-card-bottom .player-info .player-features .player-features-col div .player-feature-value {
+                            font-size: 1.3rem;
+                        }

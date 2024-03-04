@@ -1,0 +1,73 @@
+﻿@if (Data != null)
+{
+    <div class="fut-player-card">
+        <div class="player-card-top">
+            <div class="player-master-info">
+                <div class="player-rating">
+                    <span>@Data.Number</span>
+                </div>
+                <div class="player-position">
+                    <span>@Data.Position</span>
+                </div>
+                <div class="player-nation">
+                    <img src="assets/Flag_of_Vietnam.svg" alt="Viet_Nam" draggable="false" />
+                </div>
+            </div>
+            <div class="player-picture">
+                <img src="assets/Khai.ND.png" alt="KhaiND" draggable="false" />
+            </div>
+        </div>
+        <div class="player-card-bottom">
+            <div class="player-info">
+                <!-- Player Name-->
+                <div class="player-name">
+                    <span>@Data.Name</span>
+                </div>
+                <!-- Player Features-->
+                <div class="player-features">
+                    <div class="player-features-col">
+                        <div>
+                            <div class="player-feature-title">SPE</div>
+                            <div class="player-feature-value">@Data.Speed</div>
+                        </div>
+                    </div>
+                    <div class="player-features-col">
+                        <div>
+                            <div class="player-feature-title">SHO</div>
+                            <div class="player-feature-value">@Data.Shoot</div>
+                        </div>
+                    </div>
+                    <div class="player-features-col">
+                        <div>
+                            <div class="player-feature-title">PAS</div>
+                            <div class="player-feature-value">@Data.ShortPass</div>
+                        </div>
+                    </div>
+                    <div class="player-features-col">
+                        <div>
+                            <div class="player-feature-title">DRI</div>
+                            <div class="player-feature-value">@Data.Crossing</div>
+                        </div>
+                    </div>
+                    <div class="player-features-col">
+                        <div>
+                            <div class="player-feature-title">DEF</div>
+                            <div class="player-feature-value">@Data.Acceleration</div>
+                        </div>
+                    </div>
+                    <div class="player-features-col">
+                        <div>
+                            <div class="player-feature-title">PHY</div>
+                            <div class="player-feature-value">@Data.Positioning</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public LoginResponse? Data { get; set; }
+}

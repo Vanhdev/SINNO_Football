@@ -1,0 +1,68 @@
+﻿@page "/scheduler"
+
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+                 TextProperty="Text" SelectedIndex="2"
+                 AppointmentRender=@OnAppointmentRender>
+    <RadzenDayView />
+    <RadzenWeekView />
+    <RadzenMonthView />
+    <RadzenYearView />
+</RadzenScheduler>
+
+<RadzenCard>
+    <RadzenLabel Text="Vote"></RadzenLabel>
+    <RadzenCheckBoxList @bind-Value=@values AllowSelectAll="true" SelectAllText="Sao cũng đc" TValue="int" Orientation="Orientation.Vertical" >
+        <Items>
+            <RadzenCheckBoxListItem Text="Tối T3" Value="0" />
+            <RadzenCheckBoxListItem Text="Tối T5" Value="1" />
+        </Items>
+    </RadzenCheckBoxList>
+</RadzenCard>
+
+<style>
+    .rz-scheduler-nav-views {
+        display: none;
+    }
+</style>
+
+@code {
+    IEnumerable<int> values = new int[]{};
+    RadzenScheduler<Appointment>? scheduler;
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    IList<Appointment> appointments = new List<Appointment>();
+
+    protected override void OnInitialized()
+    {
+        var date = new DateTime(2024, 2, 29);
+        var appointment = new Appointment { Start = date.AddHours(8).AddMinutes(45), End = date.AddHours(10).AddMinutes(15), Text = "ĐÁ BÓNG" };
+        appointments.Add(appointment);
+        StateHasChanged();
+        base.OnInitialized();
+    }
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        // Highlight today in month view
+        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+
+        // Highlight working hours (9-18)
+        if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+
+        if (args.Data.Text == "ĐÁ BÓNG")
+        {
+            args.Attributes["style"] = "background: red";
+        }
+    }
+}
