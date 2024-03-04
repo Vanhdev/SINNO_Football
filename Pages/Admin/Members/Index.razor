@@ -1,0 +1,128 @@
+﻿@page "/admin/members"
+@inherits Admin
+@layout AdminLayout
+
+
+@if (loggedIn)
+{
+    <RadzenButton Click=@OnClick Text="Thêm thành viên" ButtonStyle="ButtonStyle.Primary" Style="width:fit-content;margin-bottom:20px" Icon="add" />
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@members" TItem="Document" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Document" Property="Name" Title="Tên thành viên" Filterable="false" Width="160px" Frozen="true" Sortable="false" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="Document" Property="Username" Title="Tên đăng nhập" Filterable="false" Width="160px" Frozen="true" Sortable="false" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="Document" Property="Number" Title="Số áo" Filterable="false" Width="80px" Frozen="true" Sortable="false" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="Document" Property="Position" Title="Vị trí thi đấu" Filterable="false" Width="80px" Frozen="true" Sortable="false" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="Document" Property="TotalPoint" Title="Over all" Filterable="false" Width="80px" Frozen="true" Sortable="false" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="Document" Sortable="false" Filterable="false" Width="80px" Frozen="true">
+                <Template Context="data">
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Radzen.Variant="Radzen.Variant.Flat" Size="ButtonSize.Medium" Click="@(e => UpdateRow(data.ObjectId))" @onclick:stopPropagation="true">
+                    </RadzenButton>
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Radzen.Variant="Radzen.Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(data.ObjectId))" @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+}
+
+@code {
+    bool password = true;
+    Document model = new Document();
+    List<Document> members;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        members = DB.Accounts.Select(x => x.Role != "Admin").ToList();
+
+        StateHasChanged();
+    }
+
+    protected async Task OnClick()
+    {
+        StateHasChanged();
+        var result = await DialogService.OpenAsync("Thêm thành viên", (ds) =>
+    @<RadzenStack Gap="1.5rem">
+        <RadzenTemplateForm TItem="Document" Data=@model Submit=@(e => OnSubmit(e, ds))>
+            <RadzenStack Gap="1rem" Class="rz-p-sm-12">
+                <RadzenFormField Text="Tên đăng nhập" Variant="Variant.Outlined">
+                    <ChildContent>
+                        <RadzenTextBox Name="Username" @bind-Value=@model.Username AutoComplete="false" />
+                    </ChildContent>
+                </RadzenFormField>
+                <RadzenFormField Text="Mật khẩu" Variant="Variant.Outlined">
+                    <ChildContent>
+                        <RadzenTextBox @bind-Value="@model.Password" Visible="@(!password)" AutoComplete="false" />
+                        <RadzenPassword @bind-Value="@model.Password" Visible="@password" AutoComplete="false" />
+                    </ChildContent>
+                    <End>
+                        <RadzenButton Icon="@(password ? "visibility" : "visibility_off")" Click="@(e => TogglePassword(ds))" Variant="Variant.Text" Size="ButtonSize.Small" />
+                    </End>
+                </RadzenFormField>
+                <RadzenFormField Text="Tên thành viên" Variant="Variant.Outlined">
+                    <ChildContent>
+                        <RadzenTextBox Name="Name" @bind-Value=@model.Name />
+                    </ChildContent>
+                </RadzenFormField>
+                <RadzenFormField Text="Số áo" Variant="Variant.Outlined">
+                    <ChildContent>
+                        <RadzenTextBox Name="Number" @bind-Value=@model.Number />
+                    </ChildContent>
+                </RadzenFormField>
+                <RadzenFormField Text="Vị trí" Variant="Variant.Outlined">
+                    <ChildContent>
+                        <RadzenTextBox Name="Position" @bind-Value=@model.Position />
+                    </ChildContent>
+                </RadzenFormField>
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            </RadzenStack>
+        </RadzenTemplateForm>
+    </RadzenStack>
+    );
+    }
+
+    void OnSubmit(Document doc, DialogService ds)
+    {
+        var account = Actors.Account.CreateOne(doc.Username, doc.Password, "Member");
+        account.Name = doc.Name;
+        account.Number = doc.Number;
+        account.Position = doc.Position;
+
+        //Khởi tạo thông số mặc định
+        account.Speed = 70;
+        account.Acceleration = 70;
+        account.Positioning = 70;
+        account.Shoot = 70;
+        account.ShortPass = 70;
+        account.LongPass = 70;
+        account.Vision = 70;
+        account.Crossing = 70;
+        account.TotalPoint = 70;
+
+        DB.Accounts.InsertOrUpdate(account);
+        members = DB.Accounts.Select(x => x.Role != "Admin").ToList();
+        ds.Close();
+    }
+
+    protected void UpdateRow(string ID)
+    {
+        Navigation.NavigateTo($"/admin/members/update/{ID}");
+    }
+
+    protected void DeleteRow(string ID)
+    {
+        DB.Accounts.Delete(ID);
+        members = DB.Accounts.Select(x => x.Role != "Admin").ToList();
+
+        StateHasChanged();
+    }
+
+    void TogglePassword(DialogService ds)
+    {
+        password = !password;
+        StateHasChanged();
+        ds.Refresh();
+    }
+}
