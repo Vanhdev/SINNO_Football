@@ -10,6 +10,6 @@ namespace SINNO_FC
     public class Global
     {
         public const string baseUrl = "https://sinnofc.runasp.net";
-        public static LoginResponse? Infomation { get; set; }
+        public static Document? Infomation { get; set; }
     }
 }

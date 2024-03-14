@@ -24,12 +24,17 @@ namespace SINNO_FC
             builder.Services.AddScoped<TooltipService>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IMemberServcie, MemberService>();
+            builder.Services.AddScoped<IVoteServcie, VoteService>();
             builder.Services.AddRadzenComponents();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
+
+
+            DB.Start(FileSystem.Current.AppDataDirectory + "/app_database");
 
             return builder.Build();
         }
