@@ -1,36 +1,30 @@
 ﻿using Newtonsoft.Json;
-using SINNO_FC.Models;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SINNO_FC.Services
 {
-    internal interface IAuthService
+    internal interface IVoteServcie
     {
-        Task<Document?> Login(Document loginAccount);
-        Task<bool> Logout(Document Token);
+        Task<Document?> GetVote(Document Token);
+        Task<Document?> Vote(Document Token);
     }
-
-    internal class AuthService : IAuthService
+    internal class VoteService : IVoteServcie
     {
-        public async Task<Document?> Login(Document loginAccount)
+        public async Task<Document?> GetVote(Document Token)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    string url = $"{Global.baseUrl}/api/Auth/Login";
-                    var serializeContent = loginAccount.ToString();
+                    string url = $"{Global.baseUrl}/api/Vote/Get-active-vote";
+                    var serializeContent = Token.ToString();
                     Console.WriteLine(serializeContent);
                     var stringContent = new StringContent(serializeContent, Encoding.UTF8, "application/json");
                     var apiResponse = await client.PostAsync(url, stringContent);
-
-                    Console.WriteLine(serializeContent);
-                    var x = apiResponse.Content;
 
                     if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -49,29 +43,34 @@ namespace SINNO_FC.Services
                 return null;
             }
         }
-        public async Task<bool> Logout(Document token)
+
+        public async Task<Document?> Vote(Document Token)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    string url = $"{Global.baseUrl}/api/Auth/Login";
-                    var serializeContent = JsonConvert.SerializeObject(token);
+                    string url = $"{Global.baseUrl}/api/Member/Get-info";
+                    var serializeContent = JsonConvert.SerializeObject(Token);
                     Console.WriteLine(serializeContent);
                     var stringContent = new StringContent(serializeContent, Encoding.UTF8, "application/json");
                     var apiResponse = await client.PostAsync(url, stringContent);
 
                     if (apiResponse.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        return true;
+                        string body = await apiResponse.Content.ReadAsStringAsync();
+
+                        var response = Document.Parse(body);
+
+                        return response;
                     }
-                    return false;
+                    return null;
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message;
-                return false;
+                return null;
             }
         }
     }
