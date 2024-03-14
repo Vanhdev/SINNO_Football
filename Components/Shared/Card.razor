@@ -4,7 +4,7 @@
         <div class="player-card-top">
             <div class="player-master-info">
                 <div class="player-rating">
-                    <span>@Data.Number</span>
+                    <span>@Data.TotalPoint</span>
                 </div>
                 <div class="player-position">
                     <span>@Data.Position</span>
@@ -27,38 +27,50 @@
                 <div class="player-features">
                     <div class="player-features-col">
                         <div>
-                            <div class="player-feature-title">SPE</div>
-                            <div class="player-feature-value">@Data.Speed</div>
+                            <div class="player-feature-title">PAC</div>
+                            <div class="player-feature-value">@Data.Pac</div>
                         </div>
                     </div>
-                    <div class="player-features-col">
-                        <div>
-                            <div class="player-feature-title">SHO</div>
-                            <div class="player-feature-value">@Data.Shoot</div>
+                    @if (Data.Position != "GK")
+                    {
+                        <div class="player-features-col">
+                            <div>
+                                <div class="player-feature-title">SHO</div>
+                                <div class="player-feature-value">@Data.Sho</div>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div class="player-features-col">
                         <div>
                             <div class="player-feature-title">PAS</div>
-                            <div class="player-feature-value">@Data.ShortPass</div>
+                            <div class="player-feature-value">@Data.Pas</div>
                         </div>
                     </div>
                     <div class="player-features-col">
                         <div>
                             <div class="player-feature-title">DRI</div>
-                            <div class="player-feature-value">@Data.Crossing</div>
+                            <div class="player-feature-value">@Data.Dri</div>
                         </div>
                     </div>
                     <div class="player-features-col">
                         <div>
                             <div class="player-feature-title">DEF</div>
-                            <div class="player-feature-value">@Data.Acceleration</div>
+                            <div class="player-feature-value">@Data.Def</div>
                         </div>
                     </div>
+                    @if (Data.Position == "GK")
+                    {
+                        <div class="player-features-col">
+                            <div>
+                                <div class="player-feature-title">GKH</div>
+                                <div class="player-feature-value">@Data.GKH</div>
+                            </div>
+                        </div>
+                    }
                     <div class="player-features-col">
                         <div>
                             <div class="player-feature-title">PHY</div>
-                            <div class="player-feature-value">@Data.Positioning</div>
+                            <div class="player-feature-value">@Data.Phy</div>
                         </div>
                     </div>
                 </div>
@@ -69,5 +81,5 @@
 
 @code {
     [Parameter]
-    public LoginResponse? Data { get; set; }
+    public Document? Data { get; set; }
 }

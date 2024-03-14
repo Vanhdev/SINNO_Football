@@ -16,7 +16,7 @@
                  RememberMeText="Ghi nhớ mật khẩu"
                  UserRequired="Tên đăng nhập không được để trống"
                  PasswordRequired="Tên đăng nhập không được để trống"
-                 Login="@OnLogin"/>
+                 Login="@OnLogin" />
 </RadzenTemplateForm>
 
 <style>
@@ -32,16 +32,27 @@
 
     protected async Task OnLogin(LoginArgs login)
     {
-        LoginModel model = new LoginModel
+        var account = DB.Accounts.Find(login.Username);
+        if (account != null)
         {
-            Username = login.Username,
-            Password = login.Password
-        };
+            Global.Infomation = account;
+            Navigation.NavigateTo("/home");
+        }
+        else
+        {
+            Document model = new Document
+                {
+                    Username = login.Username,
+                    Password = login.Password
+                };
 
-        var res = await authService.Login(model);
+            var res = await authService.Login(model);
 
-        Global.Infomation = res;
-        Navigation.NavigateTo("/home");
+            DB.Accounts.InsertOrUpdate(res);
+
+            Global.Infomation = res;
+            Navigation.NavigateTo("/home");
+        }
     }
 
     void TogglePassword()

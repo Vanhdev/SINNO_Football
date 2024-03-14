@@ -1,4 +1,5 @@
 ﻿@page "/scheduler"
+@inject Services.IVoteServcie voteService
 
 <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                  TextProperty="Text" SelectedIndex="2"
@@ -9,15 +10,19 @@
     <RadzenYearView />
 </RadzenScheduler>
 
-<RadzenCard>
-    <RadzenLabel Text="Vote"></RadzenLabel>
-    <RadzenCheckBoxList @bind-Value=@values AllowSelectAll="true" SelectAllText="Sao cũng đc" TValue="int" Orientation="Orientation.Vertical" >
-        <Items>
-            <RadzenCheckBoxListItem Text="Tối T3" Value="0" />
-            <RadzenCheckBoxListItem Text="Tối T5" Value="1" />
-        </Items>
-    </RadzenCheckBoxList>
-</RadzenCard>
+@if (vote != null)
+{
+    <RadzenCard>
+        <RadzenLabel Text="Vote"></RadzenLabel>
+        <RadzenCheckBoxList @bind-Value=@values AllowSelectAll="true" SelectAllText="Sao cũng đc" Orientation="Orientation.Vertical">
+            <Items>
+                <RadzenCheckBoxListItem Text="@x" Value="1" />
+                <RadzenCheckBoxListItem Text="Employees" Value="2" />
+                <RadzenCheckBoxListItem Text="Customers" Value="3" />
+            </Items>
+        </RadzenCheckBoxList>
+    </RadzenCard>
+}
 
 <style>
     .rz-scheduler-nav-views {
@@ -26,19 +31,30 @@
 </style>
 
 @code {
-    IEnumerable<int> values = new int[]{};
+    IEnumerable<int> values = new int[] { };
     RadzenScheduler<Appointment>? scheduler;
-    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    Document vote;
 
     IList<Appointment> appointments = new List<Appointment>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var date = new DateTime(2024, 2, 29);
-        var appointment = new Appointment { Start = date.AddHours(8).AddMinutes(45), End = date.AddHours(10).AddMinutes(15), Text = "ĐÁ BÓNG" };
-        appointments.Add(appointment);
+        vote = await voteService.GetVote(Global.Infomation);
+
+        foreach (var choice in vote.Choices)
+        {
+            if (choice.Date != null)
+            {
+                var date = (DateTime)choice.Date;
+                var appointment = new Appointment { Start = date, End = date.AddHours(1).AddMinutes(30), Text = "ĐÁ BÓNG" };
+                appointments.Add(appointment);
+            }
+        }
+
+        var x = appointments.Count();
+
         StateHasChanged();
-        base.OnInitialized();
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)

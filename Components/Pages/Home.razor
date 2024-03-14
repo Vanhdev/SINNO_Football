@@ -1,9 +1,21 @@
 ﻿@page "/home"
+@inject Services.IMemberServcie memberService
 
-<SINNO_FC.Components.Shared.Card Data="@Global.Infomation"></SINNO_FC.Components.Shared.Card>
+<SINNO_FC.Components.Shared.Card Data="@info"></SINNO_FC.Components.Shared.Card>
 <RadzenButton Click=@(args => OnClick()) Text="Xem thông số chi tiết" ButtonStyle="ButtonStyle.Primary" />
 
 @code {
+    Document? info = Global.Infomation;
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await memberService.GetInfo(info);
+
+        Global.Infomation = res;
+        info = Global.Infomation;
+
+        StateHasChanged();
+    }
+
     void OnClick()
     {
         Navigation.NavigateTo("/deltail");
