@@ -1,4 +1,5 @@
 ﻿@page "/scheduler"
+@using System.Globalization
 @inject Services.IVoteServcie voteService
 
 <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
@@ -13,14 +14,14 @@
 @if (vote != null)
 {
     <RadzenCard>
-        <RadzenLabel Text="Vote"></RadzenLabel>
-        <RadzenCheckBoxList @bind-Value=@values AllowSelectAll="true" SelectAllText="Sao cũng đc" Orientation="Orientation.Vertical">
-            <Items>
-                <RadzenCheckBoxListItem Text="@x" Value="1" />
-                <RadzenCheckBoxListItem Text="Employees" Value="2" />
-                <RadzenCheckBoxListItem Text="Customers" Value="3" />
-            </Items>
-        </RadzenCheckBoxList>
+        <RadzenLabel Text="Vote lịch đá bóng"></RadzenLabel>
+        @foreach (var choice in vote.Choices)
+        {
+            <div class="rz-p-12 rz-text-align-center">
+                <RadzenCheckBox @bind-Value=@choice.ChoiceRespone />
+                <RadzenLabel Text=@choice.Name Style="margin-left: 8px; vertical-align: middle;" />
+            </div>
+        }
     </RadzenCard>
 }
 
@@ -47,12 +48,30 @@
             if (choice.Date != null)
             {
                 var date = (DateTime)choice.Date;
-                var appointment = new Appointment { Start = date, End = date.AddHours(1).AddMinutes(30), Text = "ĐÁ BÓNG" };
+                var appointment = new Appointment { Start = date, End = date.AddHours(1).AddMinutes(30), Text = "Vote" };
                 appointments.Add(appointment);
             }
         }
 
-        var x = appointments.Count();
+        await scheduler.Reload();
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        foreach (var choice in vote.Choices)
+        {
+            if (choice.Date != null)
+            {
+                var date = (DateTime)choice.Date;
+                var appointment = new Appointment { Start = date, End = date.AddHours(1).AddMinutes(30), Text = "ĐÁ BÓNG" };
+                appointments.Add(appointment);
+     
+            }
+        }
+
+        await scheduler.Reload();
 
         StateHasChanged();
     }
@@ -61,12 +80,6 @@
     {
         // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
-        {
-            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
-        }
-
-        // Highlight working hours (9-18)
-        if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
         }
