@@ -1,0 +1,14 @@
+﻿<RadzenDatePicker @bind-Value=@date
+                  ShowTime="true"
+                  HoursStep="1"
+                  MinutesStep="1"
+                  DateFormat="dd/MM/yyyy HH:mm"
+                  AllowInput="true"
+                  Name="TimePicker" />
+<RadzenTextBox></RadzenTextBox>
+<RadzenTextBox></RadzenTextBox>
+
+@code {
+    [Parameter]
+    public DateTime date { get; set; }
+}

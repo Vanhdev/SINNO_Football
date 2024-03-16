@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SINNI_Football", "SINNI_Football.csproj", "{6A7E92B6-627A-4125-8B0B-E1B7792A134F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SINNI_Football", "SINNI_Football.csproj", "{6A7E92B6-627A-4125-8B0B-E1B7792A134F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMG", "..\OMG\OMG.csproj", "{94715F5E-4C24-4D16-82A8-6E45D0CA242D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6A7E92B6-627A-4125-8B0B-E1B7792A134F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A7E92B6-627A-4125-8B0B-E1B7792A134F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A7E92B6-627A-4125-8B0B-E1B7792A134F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94715F5E-4C24-4D16-82A8-6E45D0CA242D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94715F5E-4C24-4D16-82A8-6E45D0CA242D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94715F5E-4C24-4D16-82A8-6E45D0CA242D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94715F5E-4C24-4D16-82A8-6E45D0CA242D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
