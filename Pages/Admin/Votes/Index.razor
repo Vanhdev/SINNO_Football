@@ -2,12 +2,76 @@
 @inherits Admin
 @layout AdminLayout
 
-<h3>Index</h3>
+@if (loggedIn && votes != null)
+{
+    <RadzenButton Click=@Add Text="Tạo vote" ButtonStyle="ButtonStyle.Primary" Style="width:fit-content;margin-bottom:20px" Icon="add" />
+    @foreach (var vote in votes)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start">
+            <RadzenLabel>
+                Deadline vote: @String.Format("{0:dd MMMM, yyyy}", vote.Deadline)
+            </RadzenLabel>
+            <RadzenButton Icon="visibility" 
+                          ImageAlternateText="View"
+                          ButtonStyle="ButtonStyle.Light" 
+                          Radzen.Variant="Radzen.Variant.Flat" 
+                          Size="ButtonSize.Medium" 
+                          Click="@(e => View(vote.ObjectId))" 
+                          @onclick:stopPropagation="true">
+            </RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Danger" 
+                          ImageAlternateText="Xóa vote"
+                          Icon="delete" 
+                          Radzen.Variant="Radzen.Variant.Flat" 
+                          Shade="Shade.Lighter" 
+                          Size="ButtonSize.Medium" 
+                          class="my-1 ms-1" 
+                          Click="@(args => Delete(vote.ObjectId))" 
+                          @onclick:stopPropagation="true">
+            </RadzenButton>
+            <RadzenButton ImageAlternateText="Đóng vote" 
+                          ButtonStyle="ButtonStyle.Warning" 
+                          Icon="disabled_by_default" 
+                          Radzen.Variant="Radzen.Variant.Flat" 
+                          Shade="Shade.Lighter" 
+                          Size="ButtonSize.Medium" 
+                          class="my-1 ms-1" 
+                          Click="@(args => Delete(vote.ObjectId))" 
+                          @onclick:stopPropagation="true">
+            </RadzenButton>
+        </RadzenStack>
+    }
+}
 
 @code {
+    DocumentList? votes;
+    int count = 1;
 
+    protected override async Task OnInitializedAsync()
+    {
+        votes = DB.Votes.SelectAll();
+        StateHasChanged();
+    }
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
+
         return base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected async Task Add()
+    {
+        Navigation.NavigateTo("/admin/votes/add-new");
+    }
+
+    protected void View(string id)
+    {
+        Navigation.NavigateTo($"/admin/votes/{id}");
+    }
+
+    protected void Delete(string id)
+    {
+        DB.Votes.Delete(id);
+        votes = DB.Votes.SelectAll();
+        StateHasChanged();
     }
 }

@@ -1,0 +1,85 @@
+﻿@page "/admin/votes/add-new"
+@using System.Globalization
+@inherits Admin
+@layout AdminLayout
+
+<PageTitle>Admin Votes</PageTitle>
+
+@if (loggedIn)
+{
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceEvenly">
+        <RadzenButton Icon="add"
+                      ButtonStyle="ButtonStyle.Light"
+                      Variant="Radzen.Variant.Flat"
+                      Size="ButtonSize.Medium"
+                      Click="@Add"
+                      @onclick:stopPropagation="true"
+                      Text="Thêm lựa chọn">
+        </RadzenButton>
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center">
+            <RadzenLabel Text="Deadline" Style="margin:auto" />
+            <InputDate Type="InputDateType.DateTimeLocal" @bind-Value:format="dd-MM-yyyy hh:mm" @bind-Value="@vote.Deadline" />
+        </RadzenStack>
+    </RadzenStack>
+    
+    <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" Style="margin-top: 30px">
+        @foreach (var choice in vote.Choices)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center">
+                <RadzenLabel Text="Chọn ngày" Component=@($"DatePicker{choice.ObjectId}") Style="margin:auto" />
+                <InputDate Type="InputDateType.DateTimeLocal" @bind-Value:format="dd/MM/yyyy hh:mm" @bind-Value="@choice.Date" />
+                <RadzenButton Icon="delete"
+                              ButtonStyle="ButtonStyle.Light"
+                              Variant="Radzen.Variant.Flat"
+                              Size="ButtonSize.Medium"
+                              Click="@(e => Delete(choice))"
+                              @onclick:stopPropagation="true">
+                </RadzenButton>
+            </RadzenStack>
+        }
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Variant="Radzen.Variant.Flat"
+                      Size="ButtonSize.Medium"
+                      Click="@Save"
+                      @onclick:stopPropagation="true"
+                      Text="Lưu">
+        </RadzenButton>
+    </RadzenStack>
+}
+
+@code {
+    Document vote;
+
+    protected override async Task OnInitializedAsync()
+    {
+        vote = new Document()
+            {
+                ObjectId = Guid.NewGuid().ToString(),
+                Choices = new List<Document>() { new Document() { ObjectId = Guid.NewGuid().ToString() } },
+                Active = true
+            };
+        StateHasChanged();
+    }
+
+    protected void Add()
+    {
+        vote.Choices = vote.Choices.Append(new Document() { ObjectId = Guid.NewGuid().ToString() }).ToList();
+        StateHasChanged();
+    }
+
+    protected void Save()
+    {
+        foreach (var choice in vote.Choices)
+        {
+            var date = (DateTime)choice.Date;
+            choice.Name = date.ToString("dddd, dd MMMM yyyy HH:mm", CultureInfo.CreateSpecificCulture("vi-VN"));
+        }
+        DB.Votes.InsertOrUpdate(vote);
+        Navigation.NavigateTo("/admin/votes");
+    }
+    protected void Delete(Document choice)
+    {
+        vote.Choices.Remove(choice);
+        StateHasChanged();
+    }
+}
