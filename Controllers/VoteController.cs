@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace SINNI_Football.Controllers
 {
@@ -7,17 +9,17 @@ namespace SINNI_Football.Controllers
     [ApiController]
     public class VoteController : ControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> Vote(Document context)
+        [HttpPost("Get-active-vote")]
+        public async Task<IActionResult> GetVote(Document context)
         {
             if (context is not null && !string.IsNullOrEmpty(context.Token))
             {
-                var actor = AuthController._users.FirstOrDefault(x => x.Key == context.Token).Value;
+                var actor = AuthController._users.FirstOrDefault(x => x.Key == context.Token.Trim()).Value;
 
                 if (actor != null)
                 {
-                    var doc = Document.Parse(context.Value.ToString());
-                    return Ok();
+                    var vote = DB.Votes.Select(x => x.Active).FirstOrDefault();
+                    return Ok(vote.ToString());
                 }
                 return Unauthorized("TOKEN_INVALID");
             }

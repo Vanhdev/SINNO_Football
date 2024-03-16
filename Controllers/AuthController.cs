@@ -12,7 +12,7 @@ namespace SINNI_Football.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(Document context)
         {
-            var username = context.Username;
+            var username = context.Username.Trim();
             var password = context.Password;
 
             // Find and check
@@ -37,7 +37,7 @@ namespace SINNI_Football.Controllers
 
             _users.Add(actor.Token, actor);
 
-            return Ok(actor);
+                return Ok(actor);
         }
 
         [HttpPost("Logout")]
@@ -45,7 +45,7 @@ namespace SINNI_Football.Controllers
         {
             if (context is not null && !string.IsNullOrEmpty(context.Token))
             {
-                var actor = _users.FirstOrDefault(x => x.Key == context.Token).Value;
+                var actor = _users.FirstOrDefault(x => x.Key == context.Token.Trim()).Value;
 
                 if (actor != null)
                 {
