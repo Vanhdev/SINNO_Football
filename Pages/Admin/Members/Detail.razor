@@ -6,36 +6,56 @@
 {
     <RadzenStack Gap="1.5rem">
         <RadzenTemplateForm TItem="Document" Data=@model Submit=@OnSubmit>
-            <RadzenRow >
+            <RadzenRow>
                 <RadzenColumn Size="12">
-                    <RadzenFormField Text="Tên thành viên" Variant="Variant.Outlined">
-                        <ChildContent>
-                            <RadzenTextBox Name="Name" @bind-Value=@model.Name />
-                        </ChildContent>
-                    </RadzenFormField>
+                    <RadzenStack AlignItems="AlignItems.Center">
+                        <RadzenFormField Text="Tên thành viên" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenTextBox Name="Name" @bind-Value=@model.Name />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenStack>
+
                 </RadzenColumn>
             </RadzenRow>
             <RadzenRow Gap="1rem">
-                <RadzenColumn Size="6">
-                    <RadzenStack>
+                <RadzenColumn Size="12">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
                         <RadzenFormField Text="Số áo" Variant="Variant.Outlined">
                             <ChildContent>
                                 <RadzenTextBox Name="Number" @bind-Value=@model.Number />
                             </ChildContent>
                         </RadzenFormField>
+                        <RadzenFormField Text="Vị trí thi đấu" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenTextBox Name="Position" @bind-Value=@model.Position />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow Gap="1rem">
+                <RadzenColumn Size="12">
+                    <RadzenStack AlignItems="AlignItems.Center">
                         <RadzenFormField Text="Tốc độ" Variant="Variant.Outlined">
                             <ChildContent>
                                 <RadzenNumeric TValue="int" Name="Speed" @bind-Value=@model.Speed />
                             </ChildContent>
                         </RadzenFormField>
-                        <RadzenFormField Text="Bứt tốc" Variant="Variant.Outlined">
-                            <ChildContent>
-                                <RadzenNumeric TValue="int" Name="Acceleration" @bind-Value=@model.Acceleration />
-                            </ChildContent>
-                        </RadzenFormField>
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow Gap="1rem" Style="margin-top:20px">
+                <RadzenColumn>
+                    <RadzenStack Orientation="Orientation.Horizontal"
+                                 AlignItems="AlignItems.Center"
+                                 Gap="0.5rem"
+                                 Class="rz-p-4 rz-mb-6 rz-border-radius-1"
+                                 Style="border: var(--rz-grid-cell-border);"
+                                 JustifyContent="JustifyContent.SpaceAround">
                         <RadzenFormField Text="Dứt điểm" Variant="Variant.Outlined">
                             <ChildContent>
-                                <RadzenNumeric TValue="int" Name="Shoot" @bind-Value=@model.Shoot />
+                                <RadzenNumeric TValue="int" Name="Shoot" @bind-Value=@model.Finishing />
                             </ChildContent>
                         </RadzenFormField>
                         <RadzenFormField Text="Chọn vị trí" Variant="Variant.Outlined">
@@ -44,38 +64,98 @@
                             </ChildContent>
                         </RadzenFormField>
                     </RadzenStack>
-                </RadzenColumn>
-                <RadzenColumn Size="6">
-                    <RadzenStack>
-                        <RadzenFormField Text="Vị trí thi đấu" Variant="Variant.Outlined">
-                            <ChildContent>
-                                <RadzenTextBox Name="Position" @bind-Value=@model.Position />
-                            </ChildContent>
-                        </RadzenFormField>
-                        <RadzenFormField Text="Chuyền ngắn" Variant="Variant.Outlined">
-                            <ChildContent>
-                                <RadzenNumeric TValue="int" Name="Short pass" @bind-Value=@model.ShortPass />
-                            </ChildContent>
-                        </RadzenFormField>
-                        <RadzenFormField Text="Chuyền dài" Variant="Variant.Outlined">
-                            <ChildContent>
-                                <RadzenNumeric TValue="int" Name="LongPass" @bind-Value=@model.LongPass />
-                            </ChildContent>
-                        </RadzenFormField>
+                    <RadzenStack Orientation="Orientation.Horizontal"
+                                 AlignItems="AlignItems.Center"
+                                 Gap="0.5rem"
+                                 Class="rz-p-4 rz-mb-6 rz-border-radius-1"
+                                 Style="border: var(--rz-grid-cell-border);"
+                                 JustifyContent="JustifyContent.SpaceAround">
                         <RadzenFormField Text="Tầm nhìn" Variant="Variant.Outlined">
                             <ChildContent>
                                 <RadzenNumeric TValue="int" Name="Vision" @bind-Value=@model.Vision />
                             </ChildContent>
                         </RadzenFormField>
-                        <RadzenFormField Text="Băng cắt" Variant="Variant.Outlined">
+                        <RadzenFormField Text="Chuyền bóng" Variant="Variant.Outlined">
                             <ChildContent>
-                                <RadzenNumeric TValue="int" Name="Crossing" @bind-Value=@model.Crossing />
+                                <RadzenNumeric TValue="int" Name="Passing" @bind-Value=@model.Passing />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal"
+                                 AlignItems="AlignItems.Center"
+                                 Gap="0.5rem"
+                                 Class="rz-p-4 rz-mb-6 rz-border-radius-1"
+                                 Style="border: var(--rz-grid-cell-border);"
+                                 JustifyContent="JustifyContent.SpaceAround">
+                        <RadzenFormField Text="Kiểm soát bóng" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="BallControl" @bind-Value=@model.BallControl />
+                            </ChildContent>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Rê bóng" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Dribbling" @bind-Value=@model.Dribbling />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenStack>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenStack Orientation="Orientation.Horizontal" 
+                                AlignItems="AlignItems.Center" 
+                                Gap="0.5rem" 
+                                Class="rz-p-4 rz-mb-6 rz-border-radius-1" 
+                                Style="border: var(--rz-grid-cell-border);"
+                                JustifyContent="JustifyContent.SpaceAround">
+                        <RadzenFormField Text="Cắt bóng" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Interception" @bind-Value=@model.Interception />
+                            </ChildContent>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Cướp bóng" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Tackling" @bind-Value=@model.Tackling />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal"
+                                 AlignItems="AlignItems.Center"
+                                 Gap="0.5rem"
+                                 Class="rz-p-4 rz-mb-6 rz-border-radius-1"
+                                 Style="border: var(--rz-grid-cell-border);"
+                                 JustifyContent="JustifyContent.SpaceAround">
+                        <RadzenFormField Text="Sức bền" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Stamina" @bind-Value=@model.Stamina />
+                            </ChildContent>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Sức mạnh" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Strength" @bind-Value=@model.Strength />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal"
+                                 AlignItems="AlignItems.Center"
+                                 Gap="0.5rem"
+                                 Class="rz-p-4 rz-mb-6 rz-border-radius-1"
+                                 Style="border: var(--rz-grid-cell-border);"
+                                 JustifyContent="JustifyContent.SpaceAround">
+                        <RadzenFormField Text="Phản xạ" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Reflexes" @bind-Value=@model.Reflexes />
+                            </ChildContent>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Phát bóng" Variant="Variant.Outlined">
+                            <ChildContent>
+                                <RadzenNumeric TValue="int" Name="Kicking" @bind-Value=@model.Kicking />
                             </ChildContent>
                         </RadzenFormField>
                     </RadzenStack>
                 </RadzenColumn>
             </RadzenRow>
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            <RadzenStack AlignItems="AlignItems.Center">
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Submit" Style="width: 160px"></RadzenButton>
+            </RadzenStack>
         </RadzenTemplateForm>
     </RadzenStack>
 }
@@ -97,7 +177,6 @@
     void OnSubmit(Document doc)
     {
         DB.Accounts.InsertOrUpdate(doc);
-
         model = doc;
 
         StateHasChanged();

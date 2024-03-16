@@ -90,16 +90,31 @@
         account.Number = doc.Number;
         account.Position = doc.Position;
 
-        //Khởi tạo thông số mặc định
+        //Khởi tạo thông số chi tiết
         account.Speed = 70;
-        account.Acceleration = 70;
+        account.BallControl = 70;
         account.Positioning = 70;
-        account.Shoot = 70;
-        account.ShortPass = 70;
-        account.LongPass = 70;
+        account.Finishing = 70;
+        account.Passing = 70;
+        account.Dribbling = 70;
         account.Vision = 70;
-        account.Crossing = 70;
-        account.TotalPoint = 70;
+        account.Interception = 70;
+        account.Tackling = 70;
+        account.Stamina = 70;
+        account.Strength = 70;
+        account.Reflexes = 70;
+        account.Kicking = 70;
+
+        //Tính toán các nhóm thông số
+        account.Pac = account.Speed;
+        account.Sho = (int)Math.Round((account.Positioning * 0.3) + (account.Finishing * 0.7), MidpointRounding.AwayFromZero); 
+        account.Pas = (int)Math.Round((account.Vision * 0.3) + (account.Passing * 0.7), MidpointRounding.AwayFromZero);
+        account.Dri = (int)Math.Round((account.BallControl * 0.5) + (account.Dribbling * 0.5), MidpointRounding.AwayFromZero);
+        account.Def = (int)Math.Round((account.Vision * 0.3) + (account.Passing * 0.7), MidpointRounding.AwayFromZero);
+        account.Phy = (int)Math.Round((account.Vision * 0.3) + (account.Passing * 0.7), MidpointRounding.AwayFromZero);
+        account.GKH = (int)Math.Round((account.Reflexes * 0.5) + (account.Kicking * 0.5), MidpointRounding.AwayFromZero);
+
+        account.TotalPoint = Actors.Member.SetTotalPoint(account);
 
         DB.Accounts.InsertOrUpdate(account);
         members = DB.Accounts.Select(x => x.Role != "Admin").ToList();
