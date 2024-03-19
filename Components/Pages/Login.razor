@@ -32,27 +32,16 @@
 
     protected async Task OnLogin(LoginArgs login)
     {
-        var account = DB.Accounts.Find(login.Username);
-        if (account != null)
-        {
-            Global.Infomation = account;
-            Navigation.NavigateTo("/home");
-        }
-        else
-        {
-            Document model = new Document
-                {
-                    Username = login.Username,
-                    Password = login.Password
-                };
+        Document model = new Document
+            {
+                Username = login.Username,
+                Password = login.Password
+            };
 
-            var res = await authService.Login(model);
+        var res = await authService.Login(model);
 
-            DB.Accounts.InsertOrUpdate(res);
-
-            Global.Infomation = res;
-            Navigation.NavigateTo("/home");
-        }
+        Global.Infomation = res;
+        Navigation.NavigateTo("/home");
     }
 
     void TogglePassword()

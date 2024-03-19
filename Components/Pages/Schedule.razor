@@ -13,15 +13,19 @@
 
 @if (vote != null)
 {
-    <RadzenCard>
+    <RadzenCard Style="justify-content:center">
         <RadzenLabel Text="Vote lịch đá bóng"></RadzenLabel>
-        @foreach (var choice in vote.Choices)
+        @foreach (var choice in choices)
         {
-            <div class="rz-p-12 rz-text-align-center">
-                <RadzenCheckBox @bind-Value=@choice.ChoiceRespone />
-                <RadzenLabel Text=@choice.Name Style="margin-left: 8px; vertical-align: middle;" />
-            </div>
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenCheckBox @bind-Value=@choice.ChoiceResponse Name="CheckBox" />
+                <RadzenLabel Text=@choice.Name Component="Checkbox" Style="margin-left: 8px; vertical-align: middle;" />
+            </RadzenStack>
         }
+        <RadzenStack JustifyContent="JustifyContent.Center">
+            <RadzenButton Click=@(args => Vote()) Text="Vote" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+        </RadzenStack>
+        
     </RadzenCard>
 }
 
@@ -39,6 +43,8 @@
 
     IList<Appointment> appointments = new List<Appointment>();
 
+    List<Document> choices = new List<Document>();
+
     protected override async Task OnInitializedAsync()
     {
         vote = await voteService.GetVote(Global.Infomation);
@@ -50,35 +56,17 @@
                 var date = (DateTime)choice.Date;
                 var appointment = new Appointment { Start = date, End = date.AddHours(1).AddMinutes(30), Text = "Vote" };
                 appointments.Add(appointment);
+                choices.Add(new Document { ObjectId = Guid.NewGuid().ToString(), Name = choice.Name, ChoiceResponse = true });
             }
         }
 
-        await scheduler.Reload();
-
+        var x = vote.ToString();
         StateHasChanged();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        foreach (var choice in vote.Choices)
-        {
-            if (choice.Date != null)
-            {
-                var date = (DateTime)choice.Date;
-                var appointment = new Appointment { Start = date, End = date.AddHours(1).AddMinutes(30), Text = "ĐÁ BÓNG" };
-                appointments.Add(appointment);
-     
-            }
-        }
-
         await scheduler.Reload();
-
-        StateHasChanged();
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-        // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
@@ -87,11 +75,29 @@
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
     {
-        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
-
-        if (args.Data.Text == "ĐÁ BÓNG")
+        if (args.Data.Text == "Vote")
         {
             args.Attributes["style"] = "background: red";
         }
+    }
+
+    void Change(bool e)
+    {
+        Document doc = new Document();
+        doc.Choices = choices;
+
+        var x = doc.ToString();
+
+        StateHasChanged();
+    }
+
+    void Vote()
+    {
+        Document doc = new Document();
+        doc.Choices = choices;
+
+        doc.Token = Global.Infomation.Token;
+
+
     }
 }
