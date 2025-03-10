@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SINNO_FOOTBALL.Views.LoginPage"
+             xmlns:vm="clr-namespace:SINNO_FOOTBALL.ViewModels">
+    <VerticalStackLayout>
+        <Image Source="login_bg.jpg"
+               HorizontalOptions="Fill"
+               />
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Text="Tên đăng nhập"
+                   Grid.Row="0"
+                   FontSize="18"/>
+            <Entry Placeholder="Điền tên đăng nhập"
+                   Grid.Row="1"
+                   Text="{Binding Username}"/>
+        </Grid>
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Text="Mật khẩu"
+                   Grid.Row="0"
+                   FontSize="18"/>
+            <Entry Placeholder="Điền mật khẩu"
+                   Grid.Row="1"
+                   Text="{Binding Password}"/>
+        </Grid>
+        <Button Text="Đăng nhập"
+                BackgroundColor="#26b1fc"
+                TextColor="#fff"
+                HorizontalOptions="Center"
+                Command="{Binding GoToHomePageCommand}"></Button>
+
+    </VerticalStackLayout>
+</ContentPage>

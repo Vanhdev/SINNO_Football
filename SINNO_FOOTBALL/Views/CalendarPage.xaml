@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SINNO_FOOTBALL.Views.CalendarPage"
+             xmlns:plugins="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar" 
+             xmlns:controls="clr-namespace:SINNO_FOOTBALL.Controls">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="daysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
+            </Style>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <VerticalStackLayout>
+        <plugins:Calendar
+            x:Name="calendar"
+            Padding="10,0"
+            ArrowsFontSize="Medium"
+            DayViewFontSize="Medium"
+            DaysLabelStyle="{StaticResource daysLabelStyle}"
+            DaysTitleColor="{AppThemeBinding Light=#F00,
+                                             Dark=#F7B548}"
+            DaysTitleWeekendColor="{AppThemeBinding Light=Red, Dark=White}"
+            DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+            HorizontalOptions="Fill"
+            SelectedDayBackgroundColor="Red"
+            OtherMonthSelectedDayColor="HotPink"
+            VerticalOptions="Fill"
+            SwipeToChangeMonthEnabled="True"
+            MonthLabelColor="Blue"
+            >
+            <plugins:Calendar.HeaderSectionTemplate>
+                <controls:CalendarHeader/>
+            </plugins:Calendar.HeaderSectionTemplate>
+        </plugins:Calendar>
+    </VerticalStackLayout>
+</ContentPage>

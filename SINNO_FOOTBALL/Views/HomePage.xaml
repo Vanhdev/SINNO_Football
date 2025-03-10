@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="SINNO_FOOTBALL.Views.HomePage"
+            xmlns:views="clr-namespace:SINNO_FOOTBALL.Views"
+            xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            Shell.NavBarIsVisible="False"
+       >
+    <TabBar>
+        <ShellContent Title="Home"
+                   Icon="house_solid.svg">
+            <views:CardPage/>
+        </ShellContent>
+        <ShellContent Title="Calendar"
+                   Icon="calendar_days_solid.svg">
+            <views:CalendarPage/>
+        </ShellContent>
+
+        <!--<Tab Title="Home" Icon="house_solid.svg">
+            <ShellContent>
+                <views:CardPage/>
+            </ShellContent>
+        </Tab>
+        <Tab Title="Calendar" Icon="calendar_days_solid.svg">
+            <ShellContent>
+                <views:CalendarPage/>
+            </ShellContent>
+        </Tab>-->
+    </TabBar>
+    
+</Shell>
